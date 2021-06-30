@@ -1,4 +1,6 @@
-<?php
+<?php // phpcs:ignore WordPress.Files.FileName.NotHyphenatedLowercase
+
+// @codingStandardsIgnoreStart
 
 namespace ODS;
 
@@ -115,7 +117,6 @@ class Helper {
 
 		$this->set_active_tab();
 
-
 	}
 
 	/**
@@ -153,16 +154,19 @@ class Helper {
 
 		if ( $this->config_menu['submenu'] ) {
 			$options_base_file_name = $this->config_menu['parent'];
-			if ( in_array( $options_base_file_name, array(
-				'options-general.php',
-				'edit-comments.php',
-				'plugins.php',
-				'edit.php',
-				'upload.php',
-				'themes.php',
-				'users.php',
-				'tools.php'
-			) ) ) {
+			if ( in_array(
+				$options_base_file_name,
+				array(
+					'options-general.php',
+					'edit-comments.php',
+					'plugins.php',
+					'edit.php',
+					'upload.php',
+					'themes.php',
+					'users.php',
+					'tools.php',
+				)
+			) ) {
 				return admin_url( "{$options_base_file_name}?page={$this->config_menu['slug']}" );
 			} else {
 				return admin_url( "admin.php?page={$this->config_menu['slug']}" );
@@ -170,7 +174,6 @@ class Helper {
 		} else {
 			return admin_url( "admin.php?page={$this->config_menu['slug']}" );
 		}
-
 
 	}
 
@@ -206,9 +209,7 @@ class Helper {
 			if ( $this->action_links ) {
 				return array_merge( $links, $this->get_default_settings_link() );
 			}
-
 		} // if ( is_bool( $this->config['settings_link'] ) )
-
 
 		// Admin URL of settings is given
 		if ( ! is_bool( $this->action_links ) && ! is_array( $this->action_links ) ) {
@@ -242,7 +243,6 @@ class Helper {
 						break;
 
 					default:
-
 						$link_url = $this->get_default_settings_url();
 
 				}
@@ -252,7 +252,6 @@ class Helper {
 			}
 
 			return array_merge( $settings_link_array, $links );
-
 
 		} // if (  $this->action_links ) )
 
@@ -277,7 +276,6 @@ class Helper {
 				? sanitize_key( $this->config_menu['slug'] )
 				: sanitize_title( $this->config_menu['page_title'] );
 
-
 		// Is it a main menu or sub_menu
 		if ( ! $this->config_menu['submenu'] ) {
 
@@ -285,7 +283,7 @@ class Helper {
 				$this->config_menu['page_title'],
 				$this->config_menu['menu_title'],
 				$this->config_menu['capability'],
-				$this->config_menu['slug'], //slug
+				$this->config_menu['slug'], // slug
 				array( $this, 'display_page' ),
 				$this->config_menu['icon'],
 				$this->config_menu['position']
@@ -308,31 +306,35 @@ class Helper {
 
 	/**
 	 * Get default config for menu
+	 *
 	 * @return array $default
 	 */
 	public function get_default_config_menu() {
 
-		return apply_filters( 'boo_settings_filter_default_menu_array', array(
-			//The name of this page
-			'page_title' => __( 'Plugin Options' ),
-			// //The Menu Title in Wp Admin
-			'menu_title' => __( 'Plugin Options' ),
-			// The capability needed to view the page
-			'capability' => 'manage_options',
-			// dashicons id or url to icon
-			// https://developer.wordpress.org/resource/dashicons/
-			'icon'       => '',
-			// Required for submenu
-			'submenu'    => false,
-			// position
-			'position'   => 100,
-			// For sub menu, we can define parent menu slug (Defaults to Options Page)
-			'parent'     => 'options-general.php',
-		) );
+		return apply_filters(
+			'boo_settings_filter_default_menu_array',
+			array(
+				// The name of this page
+				'page_title' => __( 'Plugin Options' ),
+				// //The Menu Title in Wp Admin
+				'menu_title' => __( 'Plugin Options' ),
+				// The capability needed to view the page
+				'capability' => 'manage_options',
+				// dashicons id or url to icon
+				// https://developer.wordpress.org/resource/dashicons/
+				'icon'       => '',
+				// Required for submenu
+				'submenu'    => false,
+				// position
+				'position'   => 100,
+				// For sub menu, we can define parent menu slug (Defaults to Options Page)
+				'parent'     => 'options-general.php',
+			)
+		);
 
 	}
 
-	//DEBUG
+	// DEBUG
 	public function write_log( $type, $log_line ) {
 
 		$hash        = '';
@@ -385,7 +387,7 @@ class Helper {
 			wp_enqueue_script( 'wp-color-picker' );
 		}
 
-		if ( in_array( 'media', $this->get_field_types() ) || in_array( 'file', $this->get_field_types() )  ) {
+		if ( in_array( 'media', $this->get_field_types() ) || in_array( 'file', $this->get_field_types() ) ) {
 			wp_enqueue_media();
 		}
 		wp_enqueue_script( 'jquery' );
@@ -431,7 +433,7 @@ class Helper {
 
 		return ( method_exists( $this, "sanitize_{$type}" ) )
 			? array( $this, "sanitize_{$type}" )
-			: array( $this, "sanitize_text" );
+			: array( $this, 'sanitize_text' );
 
 	}
 
@@ -439,7 +441,7 @@ class Helper {
 
 		return ( method_exists( $this, "callback_{$type}" ) )
 			? array( $this, "callback_{$type}" )
-			: array( $this, "callback_text" );
+			: array( $this, 'callback_text' );
 
 	}
 
@@ -447,8 +449,7 @@ class Helper {
 
 		return ( method_exists( $this, "callback_{$type}" ) )
 			? "callback_{$type}"
-			: "callback_text";
-
+			: 'callback_text';
 
 	}
 
@@ -491,9 +492,7 @@ class Helper {
 						);
 				}
 			}
-
 		}
-
 
 	}
 
@@ -502,47 +501,47 @@ class Helper {
 	 *
 	 */
 	public function get_page_id_for_sections( $section_id = '' ) {
-//			return $this->config_menu['slug'] . '_' . $section_id;
+		// return $this->config_menu['slug'] . '_' . $section_id;
 		return $this->config_menu['slug'];
 	}
 
 	public function get_options_group( $section_id = '' ) {
-		return str_replace( '-', '_', $this->slug ) . "_" . $section_id;
-//			return str_replace( '-', '_', $this->slug );
+		return str_replace( '-', '_', $this->slug ) . '_' . $section_id;
+		// return str_replace( '-', '_', $this->slug );
 	}
 
 	function display_page() {
 
 		// Save Default options in DB with default values
-//			$this->set_default_db_options();
+		// $this->set_default_db_options();
 
 		if ( 'options-general.php' != $this->config_menu['parent'] ) {
 			settings_errors();
 		}
 
 		echo '<div class="wrap">';
-		echo "<h1>" . get_admin_page_title() . "</h1>";
+		echo '<h1>' . get_admin_page_title() . '</h1>';
 
 		// If Debug is ON
 		if ( $this->debug ) {
-			echo "<b>TYPES of fields</b>";
+			echo '<b>TYPES of fields</b>';
 			$this->var_dump_pretty( $this->get_field_types() );
 
 			if ( $this->is_tabs ) {
-				echo "<b>Active Tab Options Array</b>";
+				echo '<b>Active Tab Options Array</b>';
 				$this->var_dump_pretty( get_option( $this->active_tab ) );
 
 			}
 		}
 
 		?>
-        <div class="metabox-holder">
+		<div class="metabox-holder">
 			<?php
 			if ( $this->is_tabs ) {
 				$this->show_navigation();
 			}
 			?>
-            <form method="post" action="options.php">
+			<form method="post" action="options.php">
 				<?php
 
 				if ( $this->is_tabs ) {
@@ -564,24 +563,24 @@ class Helper {
 				}
 
 				?>
-                <div style="padding-left: 10px">
+				<div style="padding-left: 10px">
 					<?php submit_button(); ?>
-                </div>
+				</div>
 
-            </form>
-        </div>
+			</form>
+		</div>
 		<?php
 
 		// Call General Scripts
 		$this->script_general();
 		?>
-        </div>
+		</div>
 		<?php
 	}
 
 	public function add_settings_section() {
 
-		//register settings sections
+		// register settings sections
 		foreach ( $this->settings_sections as $section ) {
 
 			if ( $this->is_tabs ) {
@@ -593,9 +592,9 @@ class Helper {
 			// Callback for Section Description
 			if ( isset( $section['callback'] ) && is_callable( $section['callback'] ) ) {
 				$callback = $section['callback'];
-			} else if ( isset( $section['desc'] ) && ! empty( $section['desc'] ) ) {
+			} elseif ( isset( $section['desc'] ) && ! empty( $section['desc'] ) ) {
 				$callback = function () use ( $section ) {
-					echo "<div class='inside'>" . esc_html( $section['desc'] ) . "</div>";
+					echo "<div class='inside'>" . esc_html( $section['desc'] ) . '</div>';
 				};
 			} else {
 				$callback = null;
@@ -614,7 +613,7 @@ class Helper {
 
 	public function add_settings_field_loop() {
 
-		//register settings fields
+		// register settings fields
 		foreach ( $this->settings_fields as $section_id => $fields ) {
 
 			if ( $this->is_tabs ) {
@@ -654,8 +653,8 @@ class Helper {
 						: $this->get_options_group(), // options_group
 					$field['name'], // options_id
 					array(
-//								'type'              => $field['type'],
-						'description'       => $field['desc'],
+						// 'type'              => $field['type'],
+																'description' => $field['desc'],
 						'sanitize_callback' => ( is_callable( $field['sanitize_callback'] ) )
 							? $field['sanitize_callback']
 							: $this->get_sanitize_callback_method( $field['type'] ),
@@ -741,7 +740,7 @@ class Helper {
 	}
 
 	function sanitize_file( $value ) {
-//		    TODO: if the option to store file as file url
+		// TODO: if the option to store file as file url
 		return esc_url_raw( $value );
 	}
 
@@ -772,7 +771,13 @@ class Helper {
 	 */
 	function callback_text( $args ) {
 
-		$html = sprintf(
+		$value = $args['value'];
+
+		if ( empty( $value ) ) {
+			$value = ( ! empty( $args['default'] ) ) ? $args['default'] : '';
+		}
+
+		$html  = sprintf(
 			'<input 
                     type="%1$s" 
                     class="%2$s-text %8$s" 
@@ -785,7 +790,7 @@ class Helper {
 			$args['size'],
 			$args['section'],
 			$args['id'],
-			$args['value'],
+			$value,
 			$this->get_markup_placeholder( $args['placeholder'] ),
 			$args['name'],
 			$args['class']
@@ -810,7 +815,6 @@ class Helper {
 		$this->add_settings_section();
 		$this->add_settings_field_loop();
 		$this->register_settings();
-
 
 	}
 
@@ -843,7 +847,13 @@ class Helper {
 		$max  = ( isset( $args['options']['max'] ) && ! empty( $args['options']['max'] ) ) ? ' max="' . $args['options']['max'] . '"' : '';
 		$step = ( isset( $args['options']['step'] ) && ! empty( $args['options']['step'] ) ) ? ' step="' . $args['options']['step'] . '"' : '';
 
-		$html = sprintf(
+		$value = $args['value'];
+
+		if ( empty( $value ) ) {
+			$value = ( ! empty( $args['default'] ) ) ? $args['default'] : '';
+		}
+
+		$html  = sprintf(
 			'<input
                     type="%1$s"
                     class="%2$s-text"
@@ -859,7 +869,7 @@ class Helper {
 			$args['size'],
 			$args['section'],
 			$args['id'],
-			$args['value'],
+			$value,
 			$this->get_markup_placeholder( $args['placeholder'] ),
 			$min,
 			$max,
@@ -879,10 +889,15 @@ class Helper {
 	 */
 	function callback_checkbox( $args ) {
 
+		$value = $args['value'];
 
-		$html = '<fieldset>';
+		if ( empty( $value ) ) {
+			$value = ( ! empty( $args['default'] ) ) ? $args['default'] : '';
+		}
+
+		$html  = '<fieldset>';
 		$html .= sprintf( '<label for="%1$s[%2$s]">', $args['section'], $args['id'] );
-		$html .= sprintf( '<input type="checkbox" class="checkbox" id="%1$s[%2$s]" name="%4$s" value="1" %3$s />', $args['section'], $args['id'], checked( $args['value'], '1', false ), $args['name'] );
+		$html .= sprintf( '<input type="checkbox" class="checkbox" id="%1$s[%2$s]" name="%4$s" value="1" %3$s />', $args['section'], $args['id'], checked( $value, '1', false ), $args['name'] );
 		$html .= sprintf( '%1$s</label>', $args['desc'] );
 		$html .= '</fieldset>';
 
@@ -903,9 +918,9 @@ class Helper {
 		$html = '<fieldset>';
 		foreach ( $args['options'] as $key => $label ) {
 			$checked = isset( $value[ $key ] ) ? $value[ $key ] : '0';
-			$html    .= sprintf( '<label for="%1$s[%2$s][%3$s]">', $args['section'], $args['id'], $key );
-			$html    .= sprintf( '<input type="checkbox" class="checkbox" id="%1$s[%2$s][%3$s]" name="%5$s[%3$s]" value="%3$s" %4$s />', $args['section'], $args['id'], $key, checked( $checked, $key, false ), $args['name'] );
-			$html    .= sprintf( '%1$s</label><br>', $label );
+			$html   .= sprintf( '<label for="%1$s[%2$s][%3$s]">', $args['section'], $args['id'], $key );
+			$html   .= sprintf( '<input type="checkbox" class="checkbox" id="%1$s[%2$s][%3$s]" name="%5$s[%3$s]" value="%3$s" %4$s />', $args['section'], $args['id'], $key, checked( $checked, $key, false ), $args['name'] );
+			$html   .= sprintf( '%1$s</label><br>', $label );
 		}
 
 		$html .= $this->get_field_description( $args );
@@ -924,7 +939,7 @@ class Helper {
 		$value = $args['value'];
 
 		if ( empty( $value ) ) {
-			$value = is_array( $args['default'] ) ? $args['default'] : array();
+			$value = ( ! empty( $args['default'] ) ) ? $args['default'] : '';
 		}
 
 		$html = '<fieldset>';
@@ -932,7 +947,7 @@ class Helper {
 		foreach ( $args['options'] as $key => $label ) {
 
 			$html .= sprintf( '<label for="%1$s[%2$s][%3$s]">', $args['section'], $args['id'], $key );
-			$html .= sprintf( '<input type="radio" class="radio" id="%1$s[%2$s][%3$s]" name="%5$s" value="%3$s" %4$s />', $args['section'], $args['id'], $key, checked( $args['value'], $key, false ), $args['name'] );
+			$html .= sprintf( '<input type="radio" class="radio" id="%1$s[%2$s][%3$s]" name="%5$s" value="%3$s" %4$s />', $args['section'], $args['id'], $key, checked( $value, $key, false ), $args['name'] );
 			$html .= sprintf( '%1$s</label><br>', $label );
 		}
 
@@ -950,13 +965,20 @@ class Helper {
 	 */
 	function callback_select( $args ) {
 
+		$value = $args['value'];
+
+		if ( empty( $value ) ) {
+			$value = ( ! empty( $args['default'] ) ) ? $args['default'] : '';
+		}
+
 		$html = sprintf( '<select class="%1$s-text %5$s" name="%4$s" id="%2$s[%3$s]">', $args['size'], $args['section'], $args['id'], $args['name'], $args['class'] );
 
 		foreach ( $args['options'] as $key => $label ) {
 			$html .=
-				sprintf( '<option value="%1s"%2s>%3s</option>',
+				sprintf(
+					'<option value="%1s"%2s>%3s</option>',
 					$key,
-					selected( $args['value'], $key, false ),
+					selected( $value, $key, false ),
 					$label
 				);
 		}
@@ -975,7 +997,13 @@ class Helper {
 	 */
 	function callback_textarea( $args ) {
 
-		$html = sprintf(
+		$value = $args['value'];
+
+		if ( empty( $value ) ) {
+			$value = ( ! empty( $args['default'] ) ) ? $args['default'] : '';
+		}
+
+		$html  = sprintf(
 			'<textarea 
                     rows="5" 
                     cols="55" 
@@ -984,7 +1012,12 @@ class Helper {
                     name="%5$s"
                     %3$s
                     >%4$s</textarea>',
-			$args['size'], $args['id'], $this->get_markup_placeholder( $args['placeholder'] ), $args['value'], $args['name'] );
+			$args['size'],
+			$args['id'],
+			$this->get_markup_placeholder( $args['placeholder'] ),
+			$value,
+			$args['name']
+		);
 		$html .= $this->get_field_description( $args );
 
 		echo $html;
@@ -1013,7 +1046,7 @@ class Helper {
 			? $args['options']['btn']
 			: __( 'Select' );
 
-		$html = sprintf( '<input type="url" class="%1$s-text wpsa-url" id="%2$s[%3$s]" name="%5$s" value="%4$s"/>', $args['size'], $args['section'], $args['id'], $args['value'], $args['name'] );
+		$html  = sprintf( '<input type="url" class="%1$s-text wpsa-url" id="%2$s[%3$s]" name="%5$s" value="%4$s"/>', $args['size'], $args['section'], $args['id'], $args['value'], $args['name'] );
 		$html .= '<input type="button" class="button boospot-browse-button" value="' . $label . '" />';
 		$html .= $this->get_field_description( $args );
 
@@ -1037,7 +1070,6 @@ class Helper {
 		$height        = isset( $args['options']['height'] ) ? absint( $args['options']['height'] ) : '';
 		$text          = isset( $args['options']['btn'] ) ? sanitize_text_field( $args['options']['btn'] ) : __( 'Upload' );
 
-
 		$image_size = ( ! empty( $width ) && ! empty( $height ) ) ? array( $width, $height ) : 'thumbnail';
 
 		if ( ! empty( $args['value'] ) ) {
@@ -1051,7 +1083,7 @@ class Helper {
 
 		$image_style = ! is_array( $image_size ) ? "style='max-width:100%; height:auto;'" : "style='width:{$width}px; height:{$height}px;'";
 
-		$max_width = $max_width . "px";
+		$max_width = $max_width . 'px';
 		// Print HTML field
 		echo '
             <div class="upload" style="max-width:' . $max_width . ';">
@@ -1078,7 +1110,7 @@ class Helper {
 	 */
 	function callback_password( $args ) {
 
-		$html = sprintf( '<input type="password" class="%1$s-text" id="%2$s[%3$s]" name="%5$s" value="%4$s"/>', $args['size'], $args['section'], $args['id'], $args['value'], $args['name'] );
+		$html  = sprintf( '<input type="password" class="%1$s-text" id="%2$s[%3$s]" name="%5$s" value="%4$s"/>', $args['size'], $args['section'], $args['id'], $args['value'], $args['name'] );
 		$html .= $this->get_field_description( $args );
 
 		echo $html;
@@ -1090,7 +1122,12 @@ class Helper {
 	 * @param array $args settings field args
 	 */
 	function callback_color( $args ) {
-		$html = sprintf( '<input type="text" class="%1$s-text wp-color-picker-field" data-alpha="true" id="%2$s[%3$s]" name="%6$s" value="%4$s" data-default-color="%5$s" />', $args['size'], $args['section'], $args['id'], $args['value'], $args['default'], $args['name'] );
+		$value = $args['value'];
+
+		if ( empty( $value ) ) {
+			$value = ( ! empty( $args['default'] ) ) ? $args['default'] : '';
+		}
+		$html  = sprintf( '<input type="text" class="%1$s-text wp-color-picker-field" data-alpha="true" id="%2$s[%3$s]" name="%6$s" value="%4$s" data-default-color="%5$s" />', $args['size'], $args['section'], $args['id'], $value, $args['default'], $args['name'] );
 		$html .= $this->get_field_description( $args );
 
 		echo $html;
@@ -1125,7 +1162,7 @@ class Helper {
 	function callback_user_roles( $args ) {
 
 		$options        = array(
-			'' => '-- ' . __( 'Select' ) . ' --'
+			'' => '-- ' . __( 'Select' ) . ' --',
 		);
 		$editable_roles = get_editable_roles();
 		foreach ( $editable_roles as $role => $details ) {
@@ -1135,7 +1172,7 @@ class Helper {
 		// free memory
 		unset( $editable_roles );
 
-		//$args['options'] is required by callback_select()
+		// $args['options'] is required by callback_select()
 		$args['options'] = $options;
 
 		$this->callback_select( $args );
@@ -1145,7 +1182,7 @@ class Helper {
 	function callback_posts( $args ) {
 		$default_args = array(
 			'post_type'   => 'post',
-			'numberposts' => - 1
+			'numberposts' => - 1,
 		);
 
 		$posts_args = wp_parse_args( $args['options'], $default_args );
@@ -1153,7 +1190,7 @@ class Helper {
 		$posts = get_posts( $posts_args );
 
 		$options = array(
-			'' => '-- ' . __( 'Select' ) . ' --'
+			'' => '-- ' . __( 'Select' ) . ' --',
 		);
 
 		foreach ( $posts as $post ) :
@@ -1165,7 +1202,7 @@ class Helper {
 		// free memory
 		unset( $posts, $posts_args, $default_args );
 
-		//$args['options'] is required by callback_select()
+		// $args['options'] is required by callback_select()
 		$args['options'] = $options;
 
 		$this->callback_select( $args );
@@ -1188,12 +1225,11 @@ class Helper {
 			return;
 		}
 
-
 		$html = '<h2 class="nav-tab-wrapper">';
 
 		foreach ( $this->settings_sections as $tab ) {
 			$active_class = ( $tab['id'] == $this->active_tab ) ? 'nav-tab-active' : '';
-			$html         .= sprintf( '<a href="%3$s&tab=%1$s" class="nav-tab %4$s" id="%1$s-tab">%2$s</a>', $tab['id'], $tab['title'], $settings_page, $active_class );
+			$html        .= sprintf( '<a href="%3$s&tab=%1$s" class="nav-tab %4$s" id="%1$s-tab">%2$s</a>', $tab['id'], $tab['title'], $settings_page, $active_class );
 		}
 
 		$html .= '</h2>';
@@ -1202,15 +1238,15 @@ class Helper {
 	}
 
 	public function var_dump_pretty( $var ) {
-		echo "<pre>";
+		echo '<pre>';
 		var_dump( $var );
-		echo "</pre>";
+		echo '</pre>';
 	}
 
 	public function var_export_pretty( $var ) {
-		echo "<pre>";
+		echo '<pre>';
 		var_export( $var );
-		echo "</pre>";
+		echo '</pre>';
 	}
 
 	/**
@@ -1220,91 +1256,91 @@ class Helper {
 	 */
 	public function script_general() {
 		?>
-        <script>
-            jQuery(document).ready(function ($) {
-                //Initiate Color Picker
-                if ($('.wp-color-picker-field').length > 0) {
-                    $('.wp-color-picker-field').wpColorPicker();
-                }
+		<script>
+			jQuery(document).ready(function ($) {
+				//Initiate Color Picker
+				if ($('.wp-color-picker-field').length > 0) {
+					$('.wp-color-picker-field').wpColorPicker();
+				}
 
 
-                // For Files Upload
-                $('.boospot-browse-button').on('click', function (event) {
-                    event.preventDefault();
+				// For Files Upload
+				$('.boospot-browse-button').on('click', function (event) {
+					event.preventDefault();
 
-                    var self = $(this);
+					var self = $(this);
 
-                    // Create the media frame.
-                    var file_frame = wp.media.frames.file_frame = wp.media({
-                        title: self.data('uploader_title'),
-                        button: {
-                            text: self.data('uploader_button_text'),
-                        },
-                        multiple: false
-                    });
+					// Create the media frame.
+					var file_frame = wp.media.frames.file_frame = wp.media({
+						title: self.data('uploader_title'),
+						button: {
+							text: self.data('uploader_button_text'),
+						},
+						multiple: false
+					});
 
-                    file_frame.on('select', function () {
-                        attachment = file_frame.state().get('selection').first().toJSON();
-                        self.prev('.wpsa-url').val(attachment.url).change();
-                    });
+					file_frame.on('select', function () {
+						attachment = file_frame.state().get('selection').first().toJSON();
+						self.prev('.wpsa-url').val(attachment.url).change();
+					});
 
-                    // Finally, open the modal
-                    file_frame.open();
-                });
-
-
-                // Prevent page navigation for un-saved changes
-                $(function () {
-                    var changed = false;
-
-                    $('input, textarea, select, checkbox').change(function () {
-                        changed = true;
-                    });
-
-                    $('.nav-tab-wrapper a').click(function () {
-                        if (changed) {
-                            window.onbeforeunload = function () {
-                                return "Changes you made may not be saved."
-                            };
-                        } else {
-                            window.onbeforeunload = '';
-                        }
-                    });
-
-                    $('.submit :input').click(function () {
-                        window.onbeforeunload = '';
-                    });
-                });
+					// Finally, open the modal
+					file_frame.open();
+				});
 
 
-                // The "Upload" button
-                $('.boospot-image-upload').click(function () {
-                    var send_attachment_bkp = wp.media.editor.send.attachment;
-                    var button = $(this);
-                    wp.media.editor.send.attachment = function (props, attachment) {
-                        $(button).parent().prev().attr('src', attachment.url);
-                        if (attachment.id) {
-                            $(button).prev().val(attachment.id);
-                        }
-                        wp.media.editor.send.attachment = send_attachment_bkp;
-                    }
-                    wp.media.editor.open(button);
-                    return false;
-                });
+				// Prevent page navigation for un-saved changes
+				$(function () {
+					var changed = false;
 
-                // The "Remove" button (remove the value from input type='hidden')
-                $('.boospot-image-remove').click(function () {
-                    var answer = confirm('Are you sure?');
-                    if (answer == true) {
-                        var src = $(this).parent().prev().attr('data-src');
-                        $(this).parent().prev().attr('src', src);
-                        $(this).prev().prev().val('');
-                    }
-                    return false;
-                });
+					$('input, textarea, select, checkbox').change(function () {
+						changed = true;
+					});
 
-            });
-        </script>
+					$('.nav-tab-wrapper a').click(function () {
+						if (changed) {
+							window.onbeforeunload = function () {
+								return "Changes you made may not be saved."
+							};
+						} else {
+							window.onbeforeunload = '';
+						}
+					});
+
+					$('.submit :input').click(function () {
+						window.onbeforeunload = '';
+					});
+				});
+
+
+				// The "Upload" button
+				$('.boospot-image-upload').click(function () {
+					var send_attachment_bkp = wp.media.editor.send.attachment;
+					var button = $(this);
+					wp.media.editor.send.attachment = function (props, attachment) {
+						$(button).parent().prev().attr('src', attachment.url);
+						if (attachment.id) {
+							$(button).prev().val(attachment.id);
+						}
+						wp.media.editor.send.attachment = send_attachment_bkp;
+					}
+					wp.media.editor.open(button);
+					return false;
+				});
+
+				// The "Remove" button (remove the value from input type='hidden')
+				$('.boospot-image-remove').click(function () {
+					var answer = confirm('Are you sure?');
+					if (answer == true) {
+						var src = $(this).parent().prev().attr('data-src');
+						$(this).parent().prev().attr('src', src);
+						$(this).prev().prev().val('');
+					}
+					return false;
+				});
+
+			});
+		</script>
 		<?php
 	}
 
@@ -1332,3 +1368,5 @@ class Helper {
 
 
 }
+
+// @codingStandardsIgnoreEnd
