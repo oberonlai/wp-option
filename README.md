@@ -17,10 +17,10 @@
 Run the following in your terminal to install with [Composer](https://getcomposer.org/).
 
 ```
-$ composer require oberonlai/wp-metabox
+$ composer require oberonlai/wp-option
 ```
 
-WP Metabox [PSR-4](https://www.php-fig.org/psr/psr-4/) autoloading and can be used with the Composer's autoloader. Below is a basic example of getting started, though your setup may be different depending on how you are using Composer.
+WP Option [PSR-4](https://www.php-fig.org/psr/psr-4/) autoloading and can be used with the Composer's autoloader. Below is a basic example of getting started, though your setup may be different depending on how you are using Composer.
 
 ```php
 require __DIR__ . '/vendor/autoload.php';
@@ -45,19 +45,23 @@ require __DIR__ . '/vendor/autoload.php';
 
 // Import PostTypes.
 use ODS\Option;
+
+$config = new Option( 'plugin-prefix' );
+$config->addMenu();
+$config->addTab();
+$config->addText();
+$config->register(); // Don't forget this.
 ```
 
 ## Usage
 
-To create a option, first instantiate an instance of `Option`.  The class takes one argument, which is an plugin prefix. All of the option name will add this prefix.
+To create a option, first instantiate an instance of `Option`.  The class takes one argument, which is an plugin prefix. All of the options' name will add this prefix.
 
 ```php
 $config = new Option( 'plugin-prefix' );
 ```
 
-## Available Methods
-
-After instantiating the above option, add a few fields to it.  Below is a list of the available fields. 
+After instantiating the above option, you have to add settings menu and tab.
 
 ### Menu
 
@@ -118,13 +122,13 @@ Fields list
 - File
 - Media Upload
 
-All of the params in field:
+Common params of fields:
 
-- id - (string) Field ID. Use get_option( $plugin-prefix.text_field_id ) to get value.
+- id - (string) Field ID. Use get_option( $plugin-prefix. 'field_id' ) to get value.
 - label - (string) Field name.
 - desc - (string) Field description.
 - placeholder - (string) Field placeholder.
-- default - (string) Select, checkbox, radio field's default option.
+- default - (string) Select, checkbox, radio default option.
 - options - (array) Select, radio, multicheck options.
 - callback - (callback) Function name to be used to render field.
 - sanitize_callback (callback) Function name to be used for sanitization
@@ -151,7 +155,7 @@ array(
 
 ### Text
 
-There are three arguments. First is the tab ID, second is text field options, last is callback function of render field.
+There are three arguments. First is the tab ID, second is text field params, and last is callback function of render field.
 
 ```php
 $config->addText(
@@ -168,7 +172,7 @@ $config->addText(
 );
 ```
 
-With callback function:
+With render callback function:
 
 ```php
 $config->addText(
@@ -339,7 +343,7 @@ $config->addCheckboxes(
 
 ### Posts
 
-Add specific post type. 
+Add specific post type. The third params is the name of custom post type.
 
 ```php
 $config->addPost(
@@ -464,4 +468,34 @@ $config->addLink(
 		),
 	)
 );
+```
+
+### Retrive field's value
+
+You can use WordPress get_option() to get value. Don't forget the prefix name of field id. For example::
+
+```php
+use ODS\Option;
+
+$config = new Option( 'hello-world-' );
+$config->addMenu();
+$config->addTab();
+$config->addText(
+	'general_section',
+	array(
+		'id'                => 'my_text_field',
+		'label'             => __( 'Hello World', 'plugin-name' ),
+		'desc'              => __( 'Some description of my field', 'plugin-name' ),
+		'placeholder'       => 'This is Placeholder',
+		'show_in_rest'      => true,
+		'class'             => 'my_custom_css_class',
+		'size'              => 'regular',
+	),
+);
+```
+
+If you want to retrive field value of 'my_text_field', use code below:
+
+```php
+$my_text_field_value = get_option( 'hello-world-my_text_field' );
 ```
