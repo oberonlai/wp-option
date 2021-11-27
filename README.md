@@ -65,7 +65,7 @@ After instantiating the above option, you have to add settings menu and tab.
 
 ### Menu
 
-Firstly, we need to add admin menu to our option page. 
+Firstly, we need to add admin menu to our admin page. 
 
 ```php
 $config->addMenu(
@@ -81,6 +81,20 @@ $config->addMenu(
 	)
 );
 ```
+
+You have to set option to true if you want to add menu under the settings menu.
+```php
+$config->addMenu(
+	array(
+		'page_title' => __( 'Plugin Name Settings', 'plugin-name' ),
+		'menu_title' => __( 'Plugin Name', 'plugin-name' ),
+		'capability' => 'manage_options',
+		'slug'       => 'plugin-name',
+		'option'     => true
+	)
+);
+```
+
 
 ### Tab
 

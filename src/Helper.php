@@ -277,7 +277,7 @@ class Helper {
 				: sanitize_title( $this->config_menu['page_title'] );
 
 		// Is it a main menu or sub_menu
-		if ( ! $this->config_menu['submenu'] ) {
+		if ( ! $this->config_menu['submenu'] && ! $this->config_menu['option'] ) {
 
 			add_menu_page(
 				$this->config_menu['page_title'],
@@ -287,6 +287,15 @@ class Helper {
 				array( $this, 'display_page' ),
 				$this->config_menu['icon'],
 				$this->config_menu['position']
+			);
+
+		} elseif( ! $this->config_menu['submenu'] && $this->config_menu['option'] ){
+			add_options_page(
+				$this->config_menu['page_title'],
+				$this->config_menu['menu_title'],
+				$this->config_menu['capability'],
+				$this->config_menu['slug'],
+				array( $this, 'display_page' ),
 			);
 
 		} else {
@@ -563,7 +572,7 @@ class Helper {
 				}
 
 				?>
-				<div style="padding-left: 10px">
+				<div>
 					<?php submit_button(); ?>
 				</div>
 

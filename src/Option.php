@@ -260,4 +260,3 @@ class Option {
 		$this->options['fields'][ $section ][] = array_merge( $option_default, $option );
 	}
 }
-
